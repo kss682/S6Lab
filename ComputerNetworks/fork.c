@@ -16,8 +16,9 @@ printf("\nThe process group id is %d",rguid);
 printf("\n");
 }
 int main(){
-    int pid,len;
+    int pid,len,var = 10;
     char *str;
+    
     pid = fork();
     if(pid == 0){
         str = "This is the child process\n";
