@@ -4,6 +4,12 @@
 #include<string.h>
 #include<stdlib.h>
 
+/*
+Pipe is a technique used to pass information 
+from one process to another.
+One way communication.
+pipe is temporary , last as long as the process is there 
+*/
 int main(){
     char *str,*MESSAGE,*RECV;
     int p[2],pid;
