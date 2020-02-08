@@ -19,7 +19,7 @@ int main(){
     if(pid == 0){
         //str = "The child process is running \n";
         //write(1,str,strlen(str));
-        read(p[0],RECV,12);
+        read(p[0],RECV,11);
         write(1,RECV,strlen(RECV));
     }
     else{
