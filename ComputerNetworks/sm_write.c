@@ -1,26 +1,35 @@
-#include <sys/ipc.h> 
-#include <sys/shm.h> 
+//Producer Process
 #include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#include <fcntl.h> 
+#include <sys/shm.h> 
+#include <sys/stat.h>
+#include <sys/mman.h>
 
 int main() 
 { 
-	// ftok to generate unique key 
-	key_t key = ftok("shmfile",65); 
+    const int SIZE = 4096; 
+  
+    const char* name = "OS"; 
+  
+    const char* message_0 = "Hello"; 
+    const char* message_1 = "World!"; 
 
-	// shmget returns an identifier in shmid 
-	int shmid = shmget(key,1024,0666|IPC_CREAT); 
+    int shm_fd; 
+  
+    void* ptr; 
+  
+    shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666); 
 
-	// shmat to attach to shared memory 
-	char *str = (char*) shmat(shmid,(void*)0,0); 
+    ftruncate(shm_fd, SIZE); 
 
-	printf("Write data:");
-	gets(str); 
-
-	printf("Data written in memory: %s\n",str); 
-	
-	//detach from shared memory 
-	shmdt(str); 
-
-	return 0; 
+    ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0); 
+  
+    sprintf(ptr, "%s", message_0); 
+  
+    ptr += strlen(message_0); 
+    sprintf(ptr, "%s", message_1); 
+    ptr += strlen(message_1); 
+    return 0; 
 } 
-
